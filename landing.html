@@ -162,42 +162,62 @@
     <script>
         const audio = document.getElementById('oceanSound');
         const muteBtn = document.getElementById('muteToggle');
-        let isMuted = false;
+        
+        // 1. Check if the user previously muted the app
+        let isMuted = localStorage.getItem('ecpackMuted') === 'true';
         let hasStarted = false;
 
-        // Function to start music on the very first tap/click anywhere
+        // Apply saved mute state on load
+        audio.muted = isMuted;
+        muteBtn.textContent = isMuted ? "🔇" : "🔊";
+
         function playOceanOnce() {
             if (!hasStarted && !isMuted) {
+                // 2. Start volume at 0 for the Fade-In
+                audio.volume = 0;
                 audio.play().then(() => {
                     hasStarted = true;
-                }).catch(error => {
-                    console.log("Playback failed, waiting for user interaction.");
-                });
+                    fadeInAudio();
+                }).catch(error => console.log("Interaction required"));
             }
         }
 
+        // 3. Smooth Fade-In Logic
+        function fadeInAudio() {
+            let volume = 0;
+            const interval = setInterval(() => {
+                if (volume < 1) {
+                    volume += 0.05; // Increase volume by 5% every 100ms
+                    audio.volume = Math.min(volume, 1);
+                } else {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
         function toggleMute(event) {
-            // Stop the tap from triggering the body's playOceanOnce again
             event.stopPropagation(); 
-            
             isMuted = !isMuted;
+            
+            // 4. Save the preference to the phone's memory
+            localStorage.setItem('ecpackMuted', isMuted);
+            
             audio.muted = isMuted;
             muteBtn.textContent = isMuted ? "🔇" : "🔊";
             
-            // If we are unmuting and it hasn't started yet, play it
             if (!isMuted) {
                 audio.play();
+                audio.volume = 1; // Instant on if unmuting manually
                 hasStarted = true;
             }
         }
 
-        // Also ensure it starts if they click the "Let's Start" button specifically
-        document.querySelector('.start-btn').addEventListener('click', function(e) {
-            // We don't preventDefault here because we want the link to work
+        document.querySelector('.start-btn').addEventListener('click', function() {
             playOceanOnce();
         });
     </script>
 </body>
 
 </html>
+
 
