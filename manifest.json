@@ -1,7 +1,7 @@
 {
   "name": "ecpack",
   "short_name": "ecpack",
-  "start_url": "index.html",
+  "start_url": "landing.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff69b4",
