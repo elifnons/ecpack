@@ -163,44 +163,28 @@
         const audio = document.getElementById('oceanSound');
         const muteBtn = document.getElementById('muteToggle');
         
-        // 1. Load saved state from phone memory
+        // Check saved mute state
         let isMuted = localStorage.getItem('ecpackMuted') === 'true';
         let hasStarted = false;
 
-        // Apply saved mute state immediately on UI
+        // Apply settings immediately
         audio.muted = isMuted;
         muteBtn.textContent = isMuted ? "🔇" : "🔊";
+        audio.volume = 1; // Ensure volume is at 100% immediately
 
-        // 2. The Master Play Function
-        function handleFirstInteraction() {
+        function playMusicNow() {
             if (!hasStarted && !isMuted) {
-                audio.volume = 0; // Start at zero for fade-in
                 audio.play().then(() => {
                     hasStarted = true;
-                    fadeInAudio();
-                }).catch(error => {
-                    // This happens if the user hasn't interacted enough yet
-                    console.log("Waiting for more definitive touch...");
+                }).catch(e => {
+                    // This error only happens if the user hasn't touched the screen yet
+                    console.log("Waiting for first touch...");
                 });
             }
         }
 
-        // 3. Smooth Fade-In
-        function fadeInAudio() {
-            let vol = 50;
-            const interval = setInterval(() => {
-                if (vol < 1) {
-                    vol += 0.05;
-                    audio.volume = Math.min(vol, 1);
-                } else {
-                    clearInterval(interval);
-                }
-            }, 100);
-        }
-
-        // 4. Mute Toggle Logic
         function toggleMute(event) {
-            event.stopPropagation(); // Prevents triggering the body click
+            event.stopPropagation(); 
             isMuted = !isMuted;
             localStorage.setItem('ecpackMuted', isMuted);
             
@@ -209,20 +193,20 @@
             
             if (!isMuted) {
                 audio.play();
-                audio.volume = 1;
                 hasStarted = true;
             }
         }
 
-        // Attach listeners to EVERYTHING to catch that first tap
-        document.body.addEventListener('touchstart', handleFirstInteraction);
-        document.body.addEventListener('click', handleFirstInteraction);
-        
-        // Ensure it starts if they go straight for the button
-        document.querySelector('.start-btn').addEventListener('click', handleFirstInteraction);
+        // Catch the very first touch anywhere on the screen
+        window.addEventListener('touchstart', playMusicNow);
+        window.addEventListener('mousedown', playMusicNow);
+
+        // Also trigger when they click the start button
+        document.querySelector('.start-btn').addEventListener('click', playMusicNow);
     </script>
 </body>
 </html>
+
 
 
 
