@@ -1,4 +1,4 @@
-<html <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -384,6 +384,12 @@
             margin-top: 15px;
         }
 
+        /* Styling for the Notification Enable Button */
+        .enable-notif-btn {
+            background: #4caf50;
+            margin-bottom: 15px;
+        }
+
         .request-widget {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -460,6 +466,9 @@
 
         <div class="notification-section">
             <div class="notification-title" id="ui-reminder-title">📱 Set Reminder</div>
+            
+            <button class="set-reminder-btn enable-notif-btn" id="ui-enable-notif" onclick="enableNotifications()">Enable Lock Screen Notifications</button>
+
             <div class="input-group">
                 <label id="ui-msg-label">Reminder Message</label>
                 <select id="reminderMessage"></select>
@@ -502,6 +511,7 @@
                 requestTitle: "Suggest a Widget/Item",
                 requestPlaceholder: "Write what you want to see here...",
                 requestBtn: "Send Request",
+                enableNotif: "Enable Lock Screen Notifications",
                 reminders: [
                     "Check your luggage one more time",
                     "Did you get everything?",
@@ -532,6 +542,7 @@
                 requestTitle: "Özellik/Eşya Öner",
                 requestPlaceholder: "Buraya eklenmesini istediğin şeyi yaz...",
                 requestBtn: "İsteği Gönder",
+                enableNotif: "Kilit Ekranı Bildirimlerini Aç",
                 reminders: [
                     "Bavulunu son bir kez kontrol et",
                     "Her şeyi aldın mı?",
@@ -769,7 +780,58 @@
             setupDragAndDrop();
             loadSavedData();
             setMinDate();
+            // Start the background checker for reminders
+            setInterval(checkReminders, 30000); 
         }
+
+        // --- NOTIFICATION CONFIGURATION ---
+        
+        function enableNotifications() {
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+                return;
+            }
+
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    new Notification("ecpack", {
+                        body: currentLang === 'en' ? "Notifications Enabled! You will receive lock screen alerts." : "Bildirimler Etkinleştirildi! Kilit ekranı uyarıları alacaksınız.",
+                        icon: "https://cdn-icons-png.flaticon.com/512/564/564445.png"
+                    });
+                    document.getElementById('ui-enable-notif').style.display = 'none';
+                }
+            });
+        }
+
+        function checkReminders() {
+            const now = new Date();
+            const currentDate = now.toISOString().split('T')[0];
+            const currentTime = now.toTimeString().slice(0, 5);
+
+            reminders.forEach((r, index) => {
+                if (r.date === currentDate && r.time === currentTime) {
+                    sendLockScreenNotification(r.message);
+                    // Remove reminder after firing
+                    reminders.splice(index, 1);
+                    saveData();
+                    renderReminders();
+                }
+            });
+        }
+
+        function sendLockScreenNotification(msg) {
+            if (Notification.permission === "granted") {
+                new Notification("ecpack Reminder", {
+                    body: msg,
+                    icon: "https://cdn-icons-png.flaticon.com/512/564/564445.png",
+                    silent: false
+                });
+            } else {
+                alert("REMINDER: " + msg);
+            }
+        }
+
+        // --- UI & CORE LOGIC ---
 
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'tr' : 'en';
@@ -794,6 +856,7 @@
             document.getElementById('ui-request-title').textContent = strings.requestTitle;
             document.getElementById('requestInput').placeholder = strings.requestPlaceholder;
             document.getElementById('ui-request-btn').textContent = strings.requestBtn;
+            document.getElementById('ui-enable-notif').textContent = strings.enableNotif;
 
             const select = document.getElementById('reminderMessage');
             select.innerHTML = '';
@@ -835,19 +898,16 @@
             renderItems();
         }
 
-        // UPDATED GLOBAL SEARCH FUNCTION
         function renderItems() {
             const grid = document.getElementById('itemsGrid');
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             grid.innerHTML = '';
 
             if (searchTerm === "") {
-                // If search is empty, show only current category items
                 categories[currentCategory].items.forEach(item => {
                     createItemCard(item, grid);
                 });
             } else {
-                // If searching, scan EVERY category
                 Object.values(categories).forEach(cat => {
                     cat.items.forEach(item => {
                         const displayName = item.name[currentLang];
@@ -859,7 +919,6 @@
             }
         }
 
-        // Helper to keep code clean
         function createItemCard(item, grid) {
             const card = document.createElement('div');
             card.className = 'item-card';
@@ -999,7 +1058,7 @@
             allReqs.push({ text: req, date: new Date().toLocaleString() });
             localStorage.setItem('adminRequests', JSON.stringify(allReqs));
 
-            const emailDestination = "xykegvvl"; // Change this to your Formspree ID
+            const emailDestination = "xykegvvl"; 
 
             fetch(`https://formspree.io/f/${emailDestination}`, {
                 method: 'POST',
