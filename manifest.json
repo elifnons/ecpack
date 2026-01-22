@@ -8,7 +8,7 @@
   "description": "Smart bilingual packing assistant.",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/564/564445.png",
+      "src": "myicon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
