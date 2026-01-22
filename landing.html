@@ -187,7 +187,7 @@
             let volume = 0;
             const interval = setInterval(() => {
                 if (volume < 1) {
-                    volume += 0.05; // Increase volume by 5% every 100ms
+                    volume += 0.2; // Increase volume by 5% every 100ms
                     audio.volume = Math.min(volume, 1);
                 } else {
                     clearInterval(interval);
@@ -219,5 +219,6 @@
 </body>
 
 </html>
+
 
 
