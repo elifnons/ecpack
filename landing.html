@@ -163,24 +163,41 @@
         const audio = document.getElementById('oceanSound');
         const muteBtn = document.getElementById('muteToggle');
         let isMuted = false;
+        let hasStarted = false;
 
+        // Function to start music on the very first tap/click anywhere
         function playOceanOnce() {
-            if (!isMuted) {
-                audio.play().catch(() => {});
+            if (!hasStarted && !isMuted) {
+                audio.play().then(() => {
+                    hasStarted = true;
+                }).catch(error => {
+                    console.log("Playback failed, waiting for user interaction.");
+                });
             }
         }
 
         function toggleMute(event) {
-            event.stopPropagation();
+            // Stop the tap from triggering the body's playOceanOnce again
+            event.stopPropagation(); 
+            
             isMuted = !isMuted;
             audio.muted = isMuted;
             muteBtn.textContent = isMuted ? "🔇" : "🔊";
-
+            
+            // If we are unmuting and it hasn't started yet, play it
             if (!isMuted) {
                 audio.play();
+                hasStarted = true;
             }
         }
+
+        // Also ensure it starts if they click the "Let's Start" button specifically
+        document.querySelector('.start-btn').addEventListener('click', function(e) {
+            // We don't preventDefault here because we want the link to work
+            playOceanOnce();
+        });
     </script>
 </body>
 
 </html>
+
