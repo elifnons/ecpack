@@ -146,6 +146,25 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transform: rotate(-2deg);
         }
+        .polaroid { position: relative; }
+        .delete-mem-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 5;
+}
 
         .polaroid img {
             width: 100%;
@@ -979,13 +998,25 @@
             };
             r.readAsDataURL(file);
         }
-
+        function deleteMemory(idx) {
+            const confirmMsg = currentLang === 'en' ? "Delete this memory?" : "Bu anıyı silmek istiyor musunuz?";
+            if (confirm(confirmMsg)) {
+                travelMemories.splice(idx, 1);
+                saveData();
+                renderMemories();
+    }
+}
         function renderMemories() {
             const c = document.getElementById('memoryGallery');
             c.innerHTML = '';
-            travelMemories.forEach(m => {
-                const d = document.createElement('div'); d.className = 'polaroid';
-                d.innerHTML = `<img src="${m.image}"><div class="polaroid-note">${m.note}</div>`;
+            travelMemories.forEach((m, idx) => {
+                const d = document.createElement('div');
+                d.className = 'polaroid';
+                d.innerHTML = `
+                    <button class="delete-mem-btn" onclick="deleteMemory(${idx})">×</button>
+                    <img src="${m.image}">
+                    <div class="polaroid-note">${m.note}</div>
+                `;
                 c.appendChild(d);
             });
         }
