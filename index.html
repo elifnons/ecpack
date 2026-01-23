@@ -4,11 +4,10 @@
     <link rel="apple-touch-icon" href="myicon.png">
     <link rel="icon" type="image/png" href="myicon.png">
     <script>
-    
     if (document.referrer === "" || !document.referrer.includes("landing.html")) {
         window.location.href = "landing.html";
     }
-</script>
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ecpack</title>
@@ -34,6 +33,145 @@
             overflow-x: hidden;
         }
 
+        /* --- MENU STYLES --- */
+        .menu-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 20px;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            transition: 0.3s;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 60px 20px 20px 20px;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: none;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #fff0f5;
+            border-radius: 10px;
+            color: #ff69b4;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover {
+            background: #ff69b4;
+            color: white;
+        }
+
+        .menu-item.bottom {
+            margin-top: auto;
+            background: #eee;
+            color: #666;
+        }
+
+        /* --- SCREEN VISIBILITY --- */
+        .app-screen {
+            display: none;
+        }
+
+        .app-screen.active {
+            display: block;
+        }
+
+        /* --- RECOMMENDATIONS & POLAROID STYLES --- */
+        .rec-bubble {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid #ff69b4;
+        }
+
+        .rec-author {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+            text-align: right;
+            font-style: italic;
+        }
+
+        .memory-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            padding-top: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        .polaroid-note {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+            color: #444;
+            word-wrap: break-word;
+        }
+
+        .about-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* --- ORIGINAL STYLES --- */
         .header {
             text-align: center;
             padding: 15px;
@@ -392,7 +530,6 @@
             margin-top: 15px;
         }
 
-        /* Styling for the Notification Enable Button */
         .enable-notif-btn {
             background: #4caf50;
             margin-bottom: 15px;
@@ -403,7 +540,6 @@
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            margin-top: 15px;
             border: 2px solid #ffd1dc;
         }
 
@@ -419,34 +555,24 @@
         }
 
         @media (max-width: 480px) {
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .items-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-                gap: 10px;
-            }
-
-            .item-emoji {
-                font-size: 32px;
-            }
-
-            .item-name {
-                font-size: 10px;
-            }
-
-            .luggage-container {
-                height: 400px;
-            }
-
-            .packed-items-visual {
-                grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
-            }
+            .header h1 { font-size: 24px; }
+            .items-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .luggage-container { height: 400px; }
         }
     </style>
 </head>
 <body>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-item" onclick="showScreen('home-screen')" id="menu-home">Home</div>
+        <div class="menu-item" onclick="showScreen('suggest-screen')" id="menu-suggest">Suggesting Word</div>
+        <div class="menu-item" onclick="showScreen('notification-screen')" id="menu-notify">Set Notification</div>
+        <div class="menu-item" onclick="showScreen('recommendations-screen')" id="menu-recs">Recommendations</div>
+        <div class="menu-item" onclick="showScreen('memories-screen')" id="menu-memories">Memories</div>
+        <div class="menu-item bottom" onclick="showScreen('about-screen')" id="menu-about">About Me</div>
+    </div>
+
     <div class="header">
         <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">TR</button>
         <h1 id="ui-title">🧳 ecpack</h1>
@@ -454,117 +580,121 @@
     </div>
 
     <div class="main-container">
-        <div class="luggage-section">
-            <div class="luggage-title" id="ui-luggage-title">Your Luggage</div>
-            <div class="luggage-container" id="luggage">
-                <div class="luggage-icon-bg">🧳</div>
-                <div class="empty-luggage" id="emptyState">
-                    Drop items here to pack!<br>
-                    Tap a packed item to add more
+        <div id="home-screen" class="app-screen active">
+            <div class="luggage-section">
+                <div class="luggage-title" id="ui-luggage-title">Your Luggage</div>
+                <div class="luggage-container" id="luggage">
+                    <div class="luggage-icon-bg">🧳</div>
+                    <div class="empty-luggage" id="emptyState">Drop items here to pack!</div>
+                    <div class="packed-items-visual" id="packedItemsVisual"></div>
                 </div>
-                <div class="packed-items-visual" id="packedItemsVisual"></div>
             </div>
-        </div>
-
-        <div class="categories-section">
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search items..." oninput="renderItems()">
-            <div class="category-tabs" id="categoryTabs"></div>
-            <div class="items-grid" id="itemsGrid"></div>
-        </div>
-
-        <div class="notification-section">
-            <div class="notification-title" id="ui-reminder-title">📱 Set Reminder</div>
-            
-            <button class="set-reminder-btn enable-notif-btn" id="ui-enable-notif" onclick="enableNotifications()">Enable Lock Screen Notifications</button>
-
-            <div class="input-group">
-                <label id="ui-msg-label">Reminder Message</label>
-                <select id="reminderMessage"></select>
+            <div class="categories-section" style="margin-top:15px">
+                <input type="text" class="search-bar" id="searchInput" oninput="renderItems()">
+                <div class="category-tabs" id="categoryTabs"></div>
+                <div class="items-grid" id="itemsGrid"></div>
             </div>
-            <div class="input-group">
-                <label id="ui-date-label">Date</label>
-                <input type="date" id="reminderDate">
-            </div>
-            <div class="input-group">
-                <label id="ui-time-label">Time</label>
-                <input type="time" id="reminderTime">
-            </div>
-            <button class="set-reminder-btn" id="ui-set-btn" onclick="setReminder()">Set Reminder</button>
-            <div class="reminder-list" id="reminderList"></div>
             <button class="clear-all-btn" id="ui-clear-btn" onclick="clearAllPacked()">Clear All Packed Items</button>
         </div>
 
-        <div class="request-widget">
-            <div class="notification-title" id="ui-request-title">Suggest a Widget/Item</div>
-            <textarea id="requestInput" name="suggestion" placeholder="Write what you want to see here..."></textarea>
-            <button class="set-reminder-btn" id="ui-request-btn" onclick="submitRequest()">Send Request</button>
-            <button id="adminBtn" style="display:none; margin-top:10px; font-size:10px; color:#aaa; border:none; background:none; cursor:pointer;" onclick="viewRequests()">View Local Logs (Developer Mode)</button>
+        <div id="suggest-screen" class="app-screen">
+            <div class="request-widget">
+                <div class="notification-title" id="ui-request-title">Suggest a Widget/Item</div>
+                <textarea id="requestInput"></textarea>
+                <button class="set-reminder-btn" id="ui-request-btn" onclick="submitRequest()">Send Request</button>
+                <button id="adminBtn" style="display:none; margin-top:10px; font-size:10px; color:#aaa; border:none; background:none;" onclick="viewRequests()">View Local Logs</button>
+            </div>
+        </div>
+
+        <div id="notification-screen" class="app-screen">
+            <div class="notification-section">
+                <div class="notification-title" id="ui-reminder-title">📱 Set Reminder</div>
+                <button class="set-reminder-btn enable-notif-btn" id="ui-enable-notif" onclick="enableNotifications()">Enable Notifications</button>
+                <div class="input-group">
+                    <label id="ui-msg-label">Reminder Message</label>
+                    <select id="reminderMessage"></select>
+                </div>
+                <div class="input-group">
+                    <label id="ui-date-label">Date</label>
+                    <input type="date" id="reminderDate">
+                </div>
+                <div class="input-group">
+                    <label id="ui-time-label">Time</label>
+                    <input type="time" id="reminderTime">
+                </div>
+                <button class="set-reminder-btn" id="ui-set-btn" onclick="setReminder()">Set Reminder</button>
+                <div class="reminder-list" id="reminderList"></div>
+            </div>
+        </div>
+
+        <div id="recommendations-screen" class="app-screen">
+            <div class="notification-section">
+                <div class="notification-title" id="ui-rec-title">💡 Travel Tips</div>
+                <div class="rec-bubble">
+                    <span id="ui-rec-tip1">"You should definitely take these for going there."</span>
+                    <div class="rec-author">— Travel Expert</div>
+                </div>
+                <div class="rec-bubble">
+                    <span id="ui-rec-tip2">"Roll your clothes instead of folding to save 30% more space."</span>
+                    <div class="rec-author">— Global Wanderer</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="memories-screen" class="app-screen">
+            <div class="notification-section">
+                <div class="notification-title" id="ui-mem-title">📸 Memories</div>
+                <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="addMemory(event)">
+                <button class="set-reminder-btn" onclick="document.getElementById('photoInput').click()" id="ui-mem-add-btn">+ Add Vacation Photo</button>
+                <div class="memory-gallery" id="memoryGallery"></div>
+            </div>
+        </div>
+
+        <div id="about-screen" class="app-screen">
+            <div class="about-card">
+                <h2 style="color:#ff69b4; margin-bottom:15px" id="ui-about-title">About Me</h2>
+                <p id="ui-about-body">“This app is built by the ECPack Team.”</p>
+            </div>
         </div>
     </div>
 
     <script>
         const uiStrings = {
             en: {
-                title: "🧳 ECPack",
-                subtitle: "Drag items to your luggage",
-                luggageTitle: "Your Luggage",
+                title: "🧳 ECPack", subtitle: "Drag items to your luggage", luggageTitle: "Your Luggage",
                 empty: "Drop items here to pack!<br>Tap a packed item to add more",
-                reminderTitle: "📱 Set Reminder",
-                msgLabel: "Reminder Message",
-                dateLabel: "Date",
-                timeLabel: "Time",
-                setBtn: "Set Reminder",
-                clearBtn: "Clear All Packed Items",
-                searchPlaceholder: "Search ALL items...",
-                requestTitle: "Suggest a Widget/Item",
-                requestPlaceholder: "Write what you want to see here...",
-                requestBtn: "Send Request",
+                reminderTitle: "📱 Set Reminder", msgLabel: "Reminder Message", dateLabel: "Date",
+                timeLabel: "Time", setBtn: "Set Reminder", clearBtn: "Clear All Packed Items",
+                searchPlaceholder: "Search ALL items...", requestTitle: "Suggest a Widget/Item",
+                requestPlaceholder: "Write what you want to see here...", requestBtn: "Send Request",
                 enableNotif: "Enable Lock Screen Notifications",
-                reminders: [
-                    "Check your luggage one more time",
-                    "Did you get everything?",
-                    "Don't forget your essentials!",
-                    "Time to pack!",
-                    "Review your packing list"
-                ],
-                confirmClear: "Are you sure you want to clear all packed items?",
-                emptyAlert: "Your luggage is already empty!",
-                setAlert: "Reminder set for",
-                at: "at",
-                delete: "Delete",
-                requestSuccess: "Your request has been sent to my email!",
-                requestError: "There was an error sending. Please try again."
+                reminders: ["Check your luggage", "Did you get everything?", "Don't forget essentials!", "Time to pack!", "Review list"],
+                confirmClear: "Clear all?", emptyAlert: "Already empty!", setAlert: "Set for", at: "at", delete: "Delete",
+                requestSuccess: "Sent!", requestError: "Error!",
+                menuHome: "Home", menuSuggest: "Suggest Item", menuNotify: "Set Notification",
+                menuRecs: "Recommendations", menuMemories: "Memories", menuAbout: "About Me",
+                recTitle: "💡 Travel Tips", recTip1: '"You should definitely take these for going there."',
+                recTip2: '"Roll your clothes instead of folding to save 30% more space."',
+                memTitle: "📸 Memories", memAddBtn: "+ Add Vacation Photo", memPrompt: "Note:",
+                aboutTitle: "About Me", aboutBody: "“This app is built by the ECPack Team.”"
             },
             tr: {
-                title: "🧳 ECPack",
-                subtitle: "Eşyaları bavula sürükle",
-                luggageTitle: "Bavulun",
+                title: "🧳 ECPack", subtitle: "Eşyaları bavula sürükle", luggageTitle: "Bavulun",
                 empty: "Paketlemek için sürükle!<br>Sayı artırmak için üzerine tıkla",
-                reminderTitle: "📱 Hatırlatıcı Ayarla",
-                msgLabel: "Hatırlatıcı Mesajı",
-                dateLabel: "Tarih",
-                timeLabel: "Saat",
-                setBtn: "Hatırlatıcı Kur",
-                clearBtn: "Bavulu Tamamen Boşalt",
-                searchPlaceholder: "TÜM eşyalarda ara...",
-                requestTitle: "Özellik/Eşya Öner",
-                requestPlaceholder: "Buraya eklenmesini istediğin şeyi yaz...",
-                requestBtn: "İsteği Gönder",
-                enableNotif: "Kilit Ekranı Bildirimlerini Aç",
-                reminders: [
-                    "Bavulunu son bir kez kontrol et",
-                    "Her şeyi aldın mı?",
-                    "Temel ihtiyaçlarını unutma!",
-                    "Paketleme zamanı!",
-                    "Hazırlık listeni gözden geçir"
-                ],
-                confirmClear: "Tüm eşyaları silmek istediğine emin misin?",
-                emptyAlert: "Bavulun zaten boş!",
-                setAlert: "Hatırlatıcı ayarlandı:",
-                at: "saat:",
-                delete: "Sil",
-                requestSuccess: "İsteğin e-postama gönderildi!",
-                requestError: "Gönderilirken bir hata oluştu. Tekrar deneyin."
+                reminderTitle: "📱 Hatırlatıcı Ayarla", msgLabel: "Hatırlatıcı Mesajı", dateLabel: "Tarih",
+                timeLabel: "Saat", setBtn: "Hatırlatıcı Kur", clearBtn: "Bavulu Tamamen Boşalt",
+                searchPlaceholder: "TÜM eşyalarda ara...", requestTitle: "Özellik/Eşya Öner",
+                requestPlaceholder: "Buraya eklenmesini istediğin şeyi yaz...", requestBtn: "İsteği Gönder",
+                enableNotif: "Bildirimleri Aç",
+                reminders: ["Bavulu kontrol et", "Her şeyi aldın mı?", "Temel eşyaları unutma!", "Paketleme zamanı!", "Listeye bak"],
+                confirmClear: "Silinsin mi?", emptyAlert: "Zaten boş!", setAlert: "Ayarlandı:", at: "saat:", delete: "Sil",
+                requestSuccess: "Gönderildi!", requestError: "Hata!",
+                menuHome: "Ana Sayfa", menuSuggest: "Eşya Öner", menuNotify: "Hatırlatıcı Kur",
+                menuRecs: "Öneriler", menuMemories: "Anılar", menuAbout: "Hakkımda",
+                recTitle: "💡 Seyahat İpuçları", recTip1: '"Oraya giderken bunları mutlaka yanına almalısın."',
+                recTip2: '"Kıyafetleri katlamak yerine rulo yapmak %30 daha fazla alan sağlar."',
+                memTitle: "📸 Anılar", memAddBtn: "+ Tatil Fotoğrafı Ekle", memPrompt: "Not:",
+                aboutTitle: "Hakkımda", aboutBody: "“Bu uygulama ECPack Ekibi tarafından geliştirilmiştir.”"
             }
         };
 
@@ -778,345 +908,189 @@
             }
         };
 
-        let packedItems = [];
-        let reminders = [];
-        let currentLang = 'en';
-        let currentCategory = 'General Clothes';
+        let packedItems = [], reminders = [], travelMemories = [], currentLang = 'en', currentCategory = 'General Clothes';
 
-        function initApp() {
-            updateUI();
-            setupDragAndDrop();
-            loadSavedData();
-            setMinDate();
-            // Start the background checker for reminders
-            setInterval(checkReminders, 30000); 
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('active');
+            document.getElementById('menuOverlay').classList.toggle('active');
         }
 
-        // --- NOTIFICATION CONFIGURATION ---
-        
-        function enableNotifications() {
-            if (!("Notification" in window)) {
-                alert("This browser does not support desktop notification");
-                return;
-            }
-
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    new Notification("ecpack", {
-                        body: currentLang === 'en' ? "Notifications Enabled! You will receive lock screen alerts." : "Bildirimler Etkinleştirildi! Kilit ekranı uyarıları alacaksınız.",
-                        icon: "https://cdn-icons-png.flaticon.com/512/564/564445.png"
-                    });
-                    document.getElementById('ui-enable-notif').style.display = 'none';
-                }
-            });
+        function showScreen(id) {
+            document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            toggleMenu();
+            window.scrollTo(0,0);
         }
-
-        function checkReminders() {
-            const now = new Date();
-            const currentDate = now.toISOString().split('T')[0];
-            const currentTime = now.toTimeString().slice(0, 5);
-
-            reminders.forEach((r, index) => {
-                if (r.date === currentDate && r.time === currentTime) {
-                    sendLockScreenNotification(r.message);
-                    // Remove reminder after firing
-                    reminders.splice(index, 1);
-                    saveData();
-                    renderReminders();
-                }
-            });
-        }
-
-        function sendLockScreenNotification(msg) {
-            if (Notification.permission === "granted") {
-                new Notification("ecpack Reminder", {
-                    body: msg,
-                    icon: "https://cdn-icons-png.flaticon.com/512/564/564445.png",
-                    silent: false
-                });
-            } else {
-                alert("REMINDER: " + msg);
-            }
-        }
-
-        // --- UI & CORE LOGIC ---
 
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'tr' : 'en';
             document.getElementById('langBtn').textContent = currentLang === 'en' ? 'TR' : 'EN';
-            document.getElementById('adminBtn').style.display = currentLang === 'en' ? 'block' : 'none';
             updateUI();
         }
 
         function updateUI() {
-            const strings = uiStrings[currentLang];
-            document.getElementById('ui-title').textContent = strings.title;
-            document.getElementById('ui-subtitle').textContent = strings.subtitle;
-            document.getElementById('ui-luggage-title').textContent = strings.luggageTitle;
-            document.getElementById('emptyState').innerHTML = strings.empty;
-            document.getElementById('ui-reminder-title').textContent = strings.reminderTitle;
-            document.getElementById('ui-msg-label').textContent = strings.msgLabel;
-            document.getElementById('ui-date-label').textContent = strings.dateLabel;
-            document.getElementById('ui-time-label').textContent = strings.timeLabel;
-            document.getElementById('ui-set-btn').textContent = strings.setBtn;
-            document.getElementById('ui-clear-btn').textContent = strings.clearBtn;
-            document.getElementById('searchInput').placeholder = strings.searchPlaceholder;
-            document.getElementById('ui-request-title').textContent = strings.requestTitle;
-            document.getElementById('requestInput').placeholder = strings.requestPlaceholder;
-            document.getElementById('ui-request-btn').textContent = strings.requestBtn;
-            document.getElementById('ui-enable-notif').textContent = strings.enableNotif;
+            const s = uiStrings[currentLang];
+            document.getElementById('ui-title').textContent = s.title;
+            document.getElementById('ui-subtitle').textContent = s.subtitle;
+            document.getElementById('ui-luggage-title').textContent = s.luggageTitle;
+            document.getElementById('emptyState').innerHTML = s.empty;
+            document.getElementById('ui-reminder-title').textContent = s.reminderTitle;
+            document.getElementById('ui-msg-label').textContent = s.msgLabel;
+            document.getElementById('ui-date-label').textContent = s.dateLabel;
+            document.getElementById('ui-time-label').textContent = s.timeLabel;
+            document.getElementById('ui-set-btn').textContent = s.setBtn;
+            document.getElementById('ui-clear-btn').textContent = s.clearBtn;
+            document.getElementById('ui-request-title').textContent = s.requestTitle;
+            document.getElementById('requestInput').placeholder = s.requestPlaceholder;
+            document.getElementById('ui-request-btn').textContent = s.requestBtn;
+            document.getElementById('searchInput').placeholder = s.searchPlaceholder;
 
-            const select = document.getElementById('reminderMessage');
-            select.innerHTML = '';
-            strings.reminders.forEach(msg => {
-                const opt = document.createElement('option');
-                opt.value = msg;
-                opt.textContent = msg;
-                select.appendChild(opt);
-            });
+            // Menu translations
+            document.getElementById('menu-home').textContent = s.menuHome;
+            document.getElementById('menu-suggest').textContent = s.menuSuggest;
+            document.getElementById('menu-notify').textContent = s.menuNotify;
+            document.getElementById('menu-recs').textContent = s.menuRecs;
+            document.getElementById('menu-memories').textContent = s.menuMemories;
+            document.getElementById('menu-about').textContent = s.menuAbout;
+            document.getElementById('ui-enable-notif').textContent = s.enableNotif;
+            // New screen translations
+            document.getElementById('ui-rec-title').textContent = s.recTitle;
+            document.getElementById('ui-rec-tip1').textContent = s.recTip1;
+            document.getElementById('ui-rec-tip2').textContent = s.recTip2;
+            document.getElementById('ui-mem-title').textContent = s.memTitle;
+            document.getElementById('ui-mem-add-btn').textContent = s.memAddBtn;
+            document.getElementById('ui-about-title').textContent = s.aboutTitle;
+            document.getElementById('ui-about-body').textContent = s.aboutBody;
 
-            renderTabs();
-            renderItems();
-            renderPackedVisual();
-            renderReminders();
+            const sel = document.getElementById('reminderMessage');
+            sel.innerHTML = '';
+            s.reminders.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; sel.appendChild(o); });
+
+            renderTabs(); renderItems(); renderPackedVisual(); renderReminders(); renderMemories();
         }
 
-        function setMinDate() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('reminderDate').min = today;
-            document.getElementById('reminderDate').value = today;
-            document.getElementById('reminderTime').value = '09:00';
+        function addMemory(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const r = new FileReader();
+            r.onload = function(e) {
+                const note = prompt(uiStrings[currentLang].memPrompt);
+                if (note !== null) { travelMemories.push({ image: e.target.result, note: note || "" }); saveData(); renderMemories(); }
+            };
+            r.readAsDataURL(file);
+        }
+
+        function renderMemories() {
+            const c = document.getElementById('memoryGallery');
+            c.innerHTML = '';
+            travelMemories.forEach(m => {
+                const d = document.createElement('div'); d.className = 'polaroid';
+                d.innerHTML = `<img src="${m.image}"><div class="polaroid-note">${m.note}</div>`;
+                c.appendChild(d);
+            });
         }
 
         function renderTabs() {
-            const tabsContainer = document.getElementById('categoryTabs');
-            tabsContainer.innerHTML = '';
-            Object.keys(categories).forEach(catKey => {
-                const tab = document.createElement('div');
-                tab.className = `tab ${catKey === currentCategory ? 'active' : ''}`;
-                tab.textContent = currentLang === 'en' ? catKey : categories[catKey].tr;
-                tab.onclick = () => switchCategory(catKey);
-                tabsContainer.appendChild(tab);
+            const c = document.getElementById('categoryTabs'); c.innerHTML = '';
+            Object.keys(categories).forEach(k => {
+                const t = document.createElement('div');
+                t.className = `tab ${k === currentCategory ? 'active' : ''}`;
+                t.textContent = currentLang === 'en' ? k : categories[k].tr;
+                t.onclick = () => { currentCategory = k; renderTabs(); renderItems(); };
+                c.appendChild(t);
             });
-        }
-
-        function switchCategory(category) {
-            currentCategory = category;
-            renderTabs();
-            renderItems();
         }
 
         function renderItems() {
-            const grid = document.getElementById('itemsGrid');
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            grid.innerHTML = '';
-
-            if (searchTerm === "") {
-                categories[currentCategory].items.forEach(item => {
-                    createItemCard(item, grid);
-                });
-            } else {
-                Object.values(categories).forEach(cat => {
-                    cat.items.forEach(item => {
-                        const displayName = item.name[currentLang];
-                        if (displayName.toLowerCase().includes(searchTerm)) {
-                            createItemCard(item, grid);
-                        }
-                    });
-                });
-            }
-        }
-
-        function createItemCard(item, grid) {
-            const card = document.createElement('div');
-            card.className = 'item-card';
-            card.draggable = true;
-            card.innerHTML = `
-                <div class="item-emoji">${item.emoji}</div>
-                <div class="item-name">${item.name[currentLang]}</div>
-            `;
-
-            card.addEventListener('dragstart', (e) => {
-                card.classList.add('dragging');
-                e.dataTransfer.setData('item', JSON.stringify(item));
+            const g = document.getElementById('itemsGrid'); g.innerHTML = '';
+            categories[currentCategory].items.forEach(i => {
+                const d = document.createElement('div'); d.className = 'item-card'; d.draggable = true;
+                d.innerHTML = `<div class="item-emoji">${i.emoji}</div><div class="item-name">${i.name[currentLang]}</div>`;
+                d.addEventListener('dragstart', (e) => e.dataTransfer.setData('item', JSON.stringify(i)));
+                g.appendChild(d);
             });
-
-            card.addEventListener('dragend', () => {
-                card.classList.remove('dragging');
-            });
-
-            grid.appendChild(card);
         }
 
         function setupDragAndDrop() {
-            const luggage = document.getElementById('luggage');
-            luggage.addEventListener('dragover', e => {
+            const l = document.getElementById('luggage');
+            l.addEventListener('dragover', e => e.preventDefault());
+            l.addEventListener('drop', e => {
                 e.preventDefault();
-                luggage.classList.add('drag-over');
+                const item = JSON.parse(e.dataTransfer.getData('item'));
+                const ex = packedItems.find(p => p.name.en === item.name.en);
+                if (ex) ex.quantity++; else packedItems.push({...item, quantity: 1});
+                saveData(); renderPackedVisual();
             });
-            luggage.addEventListener('dragleave', () => luggage.classList.remove('drag-over'));
-            luggage.addEventListener('drop', e => {
-                e.preventDefault();
-                luggage.classList.remove('drag-over');
-                addToPacked(JSON.parse(e.dataTransfer.getData('item')));
-            });
-        }
-
-        function addToPacked(item) {
-            const existing = packedItems.find(i => i.name.en === item.name.en);
-            if (existing) {
-                existing.quantity++;
-            } else {
-                packedItems.push({ ...item, quantity: 1 });
-            }
-            saveData();
-            renderPackedVisual();
         }
 
         function renderPackedVisual() {
-            const container = document.getElementById('packedItemsVisual');
-            const emptyState = document.getElementById('emptyState');
-            if (packedItems.length === 0) {
-                emptyState.style.display = 'block';
-                container.innerHTML = '';
-                return;
-            }
-            emptyState.style.display = 'none';
-            container.innerHTML = '';
-            packedItems.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'packed-visual-item';
-                div.onclick = () => addToPacked(item);
-                div.innerHTML = `
-                    <div class="emoji">${item.emoji}</div>
-                    <div class="name">${item.name[currentLang]}</div>
-                    <div class="quantity">${item.quantity}x</div>
-                    <div class="remove-icon" onclick="event.stopPropagation(); removePacked(${index})">×</div>
-                `;
-                container.appendChild(div);
+            const c = document.getElementById('packedItemsVisual'), e = document.getElementById('emptyState');
+            if (packedItems.length === 0) { e.style.display = 'block'; c.innerHTML = ''; return; }
+            e.style.display = 'none'; c.innerHTML = '';
+            packedItems.forEach((it, idx) => {
+                const d = document.createElement('div'); d.className = 'packed-visual-item';
+                d.onclick = () => { it.quantity++; saveData(); renderPackedVisual(); };
+                d.innerHTML = `<div class="emoji">${it.emoji}</div><div class="name">${it.name[currentLang]}</div>
+                    <div class="quantity">${it.quantity}x</div><div class="remove-icon" onclick="event.stopPropagation(); removePacked(${idx})">×</div>`;
+                c.appendChild(d);
             });
         }
 
-        function removePacked(index) {
-            if (packedItems[index].quantity > 1) {
-                packedItems[index].quantity--;
-            } else {
-                packedItems.splice(index, 1);
-            }
-            saveData();
-            renderPackedVisual();
+        function removePacked(idx) {
+            if (packedItems[idx].quantity > 1) packedItems[idx].quantity--; else packedItems.splice(idx, 1);
+            saveData(); renderPackedVisual();
         }
 
         function clearAllPacked() {
-            const strings = uiStrings[currentLang];
-            if (packedItems.length === 0) {
-                alert(strings.emptyAlert);
-                return;
-            }
-            if (confirm(strings.confirmClear)) {
-                packedItems = [];
-                saveData();
-                renderPackedVisual();
-            }
+            if (confirm(uiStrings[currentLang].confirmClear)) { packedItems = []; saveData(); renderPackedVisual(); }
         }
 
         function setReminder() {
-            const strings = uiStrings[currentLang];
-            const message = document.getElementById('reminderMessage').value;
-            const date = document.getElementById('reminderDate').value;
-            const time = document.getElementById('reminderTime').value;
-            if (!date || !time) {
-                alert(currentLang === 'en' ? 'Please select both date and time!' : 'Lütfen tarih ve saati seçin!');
-                return;
-            }
-            reminders.push({ message, date, time });
-            saveData();
-            renderReminders();
-            alert(`${strings.setAlert} ${date} ${strings.at} ${time}`);
+            const m = document.getElementById('reminderMessage').value, d = document.getElementById('reminderDate').value, t = document.getElementById('reminderTime').value;
+            if (d && t) { reminders.push({message: m, date: d, time: t}); saveData(); renderReminders(); alert(uiStrings[currentLang].setAlert); }
         }
 
         function renderReminders() {
-            const container = document.getElementById('reminderList');
-            container.innerHTML = '';
-            reminders.forEach((r, index) => {
-                const div = document.createElement('div');
-                div.className = 'reminder-item';
-                div.innerHTML = `
-                    <div class="reminder-info">
-                        <strong>${r.message}</strong><br>
-                        ${r.date} ${uiStrings[currentLang].at} ${r.time}
-                    </div>
-                    <button class="remove-btn" onclick="removeReminder(${index})">${uiStrings[currentLang].delete}</button>
-                `;
-                container.appendChild(div);
+            const c = document.getElementById('reminderList'); c.innerHTML = '';
+            reminders.forEach((r, idx) => {
+                const d = document.createElement('div'); d.className = 'reminder-item';
+                d.innerHTML = `<div class="reminder-info"><strong>${r.message}</strong><br>${r.date} ${r.time}</div>
+                <button class="remove-btn" onclick="reminders.splice(${idx},1); saveData(); renderReminders();">${uiStrings[currentLang].delete}</button>`;
+                c.appendChild(d);
             });
         }
 
-        function removeReminder(index) {
-            reminders.splice(index, 1);
-            saveData();
-            renderReminders();
+        function checkReminders() {
+            const now = new Date(), cd = now.toISOString().split('T')[0], ct = now.toTimeString().slice(0,5);
+            reminders.forEach((r, i) => {
+                if (r.date === cd && r.time === ct) {
+                    if (Notification.permission === "granted") new Notification("ecpack", {body: r.message});
+                    else alert(r.message);
+                    reminders.splice(i,1); saveData(); renderReminders();
+                }
+            });
         }
+
+        function enableNotifications() { Notification.requestPermission(); }
 
         function submitRequest() {
-            const req = document.getElementById('requestInput').value;
-            if (!req.trim()) return;
-
-            let allReqs = JSON.parse(localStorage.getItem('adminRequests') || '[]');
-            allReqs.push({ text: req, date: new Date().toLocaleString() });
-            localStorage.setItem('adminRequests', JSON.stringify(allReqs));
-
-            const emailDestination = "xykegvvl"; 
-
-            fetch(`https://formspree.io/f/${emailDestination}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: "New ecpack Widget Suggestion",
-                    suggestion: req,
-                    timestamp: new Date().toLocaleString()
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert(uiStrings[currentLang].requestSuccess);
-                    document.getElementById('requestInput').value = '';
-                } else {
-                    alert(uiStrings[currentLang].requestError);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert(uiStrings[currentLang].requestError);
-            });
+            const v = document.getElementById('requestInput').value;
+            if (!v) return;
+            fetch(`https://formspree.io/f/xykegvvl`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({suggestion: v})
+            }).then(() => { alert(uiStrings[currentLang].requestSuccess); document.getElementById('requestInput').value = ''; });
         }
 
-        function viewRequests() {
-            let allReqs = JSON.parse(localStorage.getItem('adminRequests') || '[]');
-            if (allReqs.length === 0) {
-                alert("No requests yet.");
-                return;
-            }
-            let log = allReqs.map(r => `[${r.date}] ${r.text}`).join('\n\n');
-            alert("Local Backup Logs:\n\n" + log);
-        }
-
-        function saveData() {
-            localStorage.setItem('ecpackData', JSON.stringify({ packedItems, reminders }));
-        }
-
+        function setMinDate() { document.getElementById('reminderDate').value = new Date().toISOString().split('T')[0]; }
+        function saveData() { localStorage.setItem('ecpackData', JSON.stringify({packedItems, reminders, travelMemories})); }
         function loadSavedData() {
-            const saved = localStorage.getItem('ecpackData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                packedItems = data.packedItems || [];
-                reminders = data.reminders || [];
-                renderPackedVisual();
-                renderReminders();
-            }
+            const s = localStorage.getItem('ecpackData');
+            if (s) { const d = JSON.parse(s); packedItems = d.packedItems || []; reminders = d.reminders || []; travelMemories = d.travelMemories || []; }
+            updateUI();
         }
 
-        initApp();
+        setMinDate(); setupDragAndDrop(); loadSavedData(); setInterval(checkReminders, 30000);
     </script>
 </body>
 </html>
