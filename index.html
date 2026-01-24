@@ -649,14 +649,7 @@
         <div id="recommendations-screen" class="app-screen">
             <div class="notification-section">
                 <div class="notification-title" id="ui-rec-title">💡 Travel Tips</div>
-                <div class="rec-bubble">
-                    <span id="ui-rec-tip1">"You should definitely take these for going there."</span>
-                    <div class="rec-author">— Travel Expert</div>
-                </div>
-                <div class="rec-bubble">
-                    <span id="ui-rec-tip2">"Roll your clothes instead of folding to save 30% more space."</span>
-                    <div class="rec-author">— Global Wanderer</div>
-                </div>
+                 <div id="recommendationsContainer"></div>
             </div>
         </div>
 
@@ -676,7 +669,7 @@
             </div>
         </div>
     </div>
-
+    <script src="recommendations.js"></script>
     <script>
         const uiStrings = {
             en: {
@@ -692,8 +685,7 @@
                 requestSuccess: "Sent!", requestError: "Error!",
                 menuHome: "Home", menuSuggest: "Suggest Item", menuNotify: "Set Notification",
                 menuRecs: "Recommendations", menuMemories: "Memories", menuAbout: "About Me",
-                recTitle: "💡 Travel Tips", recTip1: '"You should definitely take these for going there."',
-                recTip2: '"Roll your clothes instead of folding to save 30% more space."',
+                recTitle: "💡 Travel Tips",
                 memTitle: "📸 Memories", memAddBtn: "+ Add Vacation Photo", memPrompt: "Note:",
                 aboutTitle: "About Me", aboutBody: "“This app is built by the ECPack Team.”"
             },
@@ -710,8 +702,7 @@
                 requestSuccess: "Gönderildi!", requestError: "Hata!",
                 menuHome: "Ana Sayfa", menuSuggest: "Eşya Öner", menuNotify: "Hatırlatıcı Kur",
                 menuRecs: "Öneriler", menuMemories: "Anılar", menuAbout: "Hakkımda",
-                recTitle: "💡 Seyahat İpuçları", recTip1: '"Oraya giderken bunları mutlaka yanına almalısın."',
-                recTip2: '"Kıyafetleri katlamak yerine rulo yapmak %30 daha fazla alan sağlar."',
+                recTitle: "💡 Seyahat İpuçları",
                 memTitle: "📸 Anılar", memAddBtn: "+ Tatil Fotoğrafı Ekle", memPrompt: "Not:",
                 aboutTitle: "Hakkımda", aboutBody: "“Bu uygulama ECPack Ekibi tarafından geliştirilmiştir.”"
             }
@@ -974,8 +965,7 @@
             document.getElementById('ui-enable-notif').textContent = s.enableNotif;
             // New screen translations
             document.getElementById('ui-rec-title').textContent = s.recTitle;
-            document.getElementById('ui-rec-tip1').textContent = s.recTip1;
-            document.getElementById('ui-rec-tip2').textContent = s.recTip2;
+
             document.getElementById('ui-mem-title').textContent = s.memTitle;
             document.getElementById('ui-mem-add-btn').textContent = s.memAddBtn;
             document.getElementById('ui-about-title').textContent = s.aboutTitle;
@@ -985,7 +975,7 @@
             sel.innerHTML = '';
             s.reminders.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; sel.appendChild(o); });
 
-            renderTabs(); renderItems(); renderPackedVisual(); renderReminders(); renderMemories();
+            renderTabs(); renderItems(); renderPackedVisual(); renderReminders(); renderMemories();renderRecommendations();
         }
 
         function addMemory(event) {
@@ -1080,7 +1070,22 @@
             const m = document.getElementById('reminderMessage').value, d = document.getElementById('reminderDate').value, t = document.getElementById('reminderTime').value;
             if (d && t) { reminders.push({message: m, date: d, time: t}); saveData(); renderReminders(); alert(uiStrings[currentLang].setAlert); }
         }
+        function renderRecommendations() {
+            const container = document.getElementById('recommendationsContainer');
+            container.innerHTML = '';
 
+            const recommendations = travelRecommendations[currentLang];
+
+            recommendations.forEach((rec, index) => {
+                const bubble = document.createElement('div');
+                bubble.className = 'rec-bubble';
+                bubble.innerHTML = `
+                    <span>"${rec.tip}"</span>
+                    <div class="rec-author">— ${rec.author}</div>
+                `;
+                container.appendChild(bubble);
+            });
+        }
         function renderReminders() {
             const c = document.getElementById('reminderList'); c.innerHTML = '';
             reminders.forEach((r, idx) => {
