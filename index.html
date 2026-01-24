@@ -1102,7 +1102,14 @@
             });
         }
 
-        function enableNotifications() { Notification.requestPermission(); }
+          function enableNotifications() {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    document.getElementById('ui-enable-notif').style.display = 'none';
+                    alert(currentLang === 'en' ? 'Notifications enabled!' : 'Bildirimler açıldı!');
+                }
+            });
+        }
 
         function submitRequest() {
             const v = document.getElementById('requestInput').value;
