@@ -3,11 +3,6 @@
 <head>
     <link rel="apple-touch-icon" href="myicon.png">
     <link rel="icon" type="image/png" href="myicon.png">
-    <script>
-    if (document.referrer === "" || !document.referrer.includes("landing.html")) {
-        window.location.href = "landing.html";
-    }
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ecpack</title>
@@ -1116,13 +1111,52 @@
             });
         }
 
-        function submitRequest() {
-            const v = document.getElementById('requestInput').value;
-            if (!v) return;
-            fetch(`https://formspree.io/f/xykegvvl`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({suggestion: v})
-            }).then(() => { alert(uiStrings[currentLang].requestSuccess); document.getElementById('requestInput').value = ''; });
+        async function submitRequest() {
+            const input = document.getElementById('requestInput');
+            const v = input.value.trim();
+            
+            // Validate input
+            if (!v) {
+                alert(currentLang === 'en' ? 'Please write something!' : 'Lütfen bir şey yazın!');
+                return;
+            }
+            
+            // Disable button during sending
+            const button = document.getElementById('ui-request-btn');
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = currentLang === 'en' ? 'Sending...' : 'Gönderiliyor...';
+            
+            try {
+                const response = await fetch('https://formspree.io/f/xykegvvl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        suggestion: v,
+                        language: currentLang,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    // Success!
+                    alert(uiStrings[currentLang].requestSuccess);
+                    input.value = '';
+                } else {
+                    // Failed
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert(uiStrings[currentLang].requestError || 'Error sending request');
+            } finally {
+                // Re-enable button
+                button.disabled = false;
+                button.textContent = originalText;
+            }
         }
 
         function setMinDate() { document.getElementById('reminderDate').value = new Date().toISOString().split('T')[0]; }
