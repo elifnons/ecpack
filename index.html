@@ -26,6 +26,308 @@
             padding: 10px;
             touch-action: pan-y;
             overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            background: linear-gradient(135deg, #001a33 0%, #003366 100%);
+        }
+
+        body.dark-mode .header {
+            background: rgba(0, 51, 102, 0.9);
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .header h1 {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .header p {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .side-menu {
+            background: #002244;
+        }
+
+        body.dark-mode .menu-item {
+            background: #003366;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .menu-item:hover {
+            background: #0055aa;
+            color: white;
+        }
+
+        body.dark-mode .menu-item.bottom {
+            background: #001a33;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .tab {
+            background: #003366;
+            color: #B2E2F2;
+            border-color: #0055aa;
+        }
+
+        body.dark-mode .tab.active {
+            background: #0055aa;
+            color: white;
+        }
+
+        body.dark-mode .item-card {
+            background: #002244;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .item-card:hover {
+            border-color: #0055aa;
+        }
+
+        body.dark-mode .item-name {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .luggage-section,
+        body.dark-mode .categories-section,
+        body.dark-mode .notification-section,
+        body.dark-mode .request-widget {
+            background: rgba(0, 34, 68, 0.9);
+        }
+
+        body.dark-mode .luggage-title,
+        body.dark-mode .notification-title {
+            color: #0055aa;
+        }
+
+        body.dark-mode .luggage-container {
+            background: linear-gradient(135deg, #001a33 0%, #003366 100%);
+            border-color: #0055aa;
+        }
+
+        body.dark-mode #emptyState {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .packed-visual-item {
+            background: #002244;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .packed-visual-item .name {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .packed-visual-item .quantity {
+            background: #003366;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .clear-all-btn {
+            background: #0055aa;
+            color: white;
+        }
+
+        body.dark-mode input,
+        body.dark-mode select,
+        body.dark-mode textarea {
+            background: #003366;
+            color: #B2E2F2;
+            border-color: #0055aa;
+        }
+
+        body.dark-mode .search-bar {
+            background: #003366;
+            color: #B2E2F2;
+            border-color: #0055aa;
+        }
+
+        body.dark-mode .set-reminder-btn {
+            background: linear-gradient(135deg, #0055aa 0%, #003366 100%);
+        }
+
+        body.dark-mode .reminder-item {
+            background: #003366;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .reminder-info {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .remove-btn {
+            background: #0055aa;
+        }
+
+        body.dark-mode .rec-bubble {
+            background: #002244;
+            color: #B2E2F2;
+            border-left-color: #0055aa;
+        }
+
+        body.dark-mode .rec-author {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .polaroid {
+            background: #002244;
+        }
+
+        body.dark-mode .polaroid-note {
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .about-card {
+            background: #002244;
+            color: #B2E2F2;
+        }
+
+        body.dark-mode .about-card h2 {
+            color: #0055aa;
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-modal.active {
+            display: flex;
+        }
+
+        .settings-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode .settings-content {
+            background: #002244;
+            color: #B2E2F2;
+        }
+
+        .settings-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #ff69b4;
+        }
+
+        body.dark-mode .settings-header {
+            color: #0055aa;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .settings-item {
+            border-bottom-color: #003366;
+        }
+
+        .settings-item-label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #003366;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .lang-button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        body.dark-mode .lang-button {
+            background: #0055aa;
+        }
+
+        .lang-button:hover {
+            transform: scale(1.05);
+        }
+
+        .close-settings-btn {
+            width: 100%;
+            margin-top: 20px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        body.dark-mode .close-settings-btn {
+            background: #0055aa;
         }
 
         /* --- MENU STYLES --- */
@@ -41,6 +343,10 @@
             cursor: pointer;
             z-index: 1001;
             font-size: 20px;
+        }
+
+        body.dark-mode .menu-btn {
+            background: #0055aa;
         }
 
         .side-menu {
@@ -159,13 +465,21 @@
             justify-content: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             z-index: 5;
-}
+        }
+
+        body.dark-mode .delete-mem-btn {
+            background: #0055aa;
+        }
 
         .polaroid img {
             width: 100%;
             height: 120px;
             object-fit: cover;
             border: 1px solid #eee;
+        }
+
+        body.dark-mode .polaroid img {
+            border-color: #003366;
         }
 
         .polaroid-note {
@@ -205,20 +519,6 @@
         .header p {
             color: #888;
             font-size: 14px;
-        }
-
-        .lang-toggle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 12px;
-            background: #ff69b4;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
         }
 
         .main-container {
@@ -261,6 +561,10 @@
             border-color: #ff1493;
             transform: scale(1.02);
             transition: all 0.3s;
+        }
+
+        body.dark-mode .luggage-container.drag-over {
+            background: linear-gradient(135deg, #002244 0%, #0055aa 100%);
         }
 
         .luggage-icon-bg {
@@ -336,6 +640,10 @@
             transition: opacity 0.2s;
         }
 
+        body.dark-mode .packed-visual-item .remove-icon {
+            background: #0055aa;
+        }
+
         .packed-visual-item:hover .remove-icon {
             opacity: 1;
         }
@@ -372,6 +680,10 @@
             border-color: #ff69b4;
         }
 
+        body.dark-mode .search-bar:focus {
+            border-color: #0055aa;
+        }
+
         .category-tabs {
             display: flex;
             overflow-x: auto;
@@ -387,6 +699,10 @@
         .category-tabs::-webkit-scrollbar-thumb {
             background: #ff69b4;
             border-radius: 2px;
+        }
+
+        body.dark-mode .category-tabs::-webkit-scrollbar-thumb {
+            background: #0055aa;
         }
 
         .tab {
@@ -473,6 +789,10 @@
             font-size: 14px;
         }
 
+        body.dark-mode .input-group label {
+            color: #B2E2F2;
+        }
+
         .input-group input, .input-group select {
             width: 100%;
             padding: 12px;
@@ -484,6 +804,11 @@
 
         .input-group input:focus, .input-group select:focus {
             border-color: #ff69b4;
+        }
+
+        body.dark-mode .input-group input:focus,
+        body.dark-mode .input-group select:focus {
+            border-color: #0055aa;
         }
 
         .set-reminder-btn {
@@ -549,12 +874,20 @@
             margin-bottom: 15px;
         }
 
+        body.dark-mode .enable-notif-btn {
+            background: #0055aa;
+        }
+
         .request-widget {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             border: 2px solid #ffd1dc;
+        }
+
+        body.dark-mode .request-widget {
+            border-color: #0055aa;
         }
 
         .request-widget textarea {
@@ -568,6 +901,12 @@
             font-family: inherit;
         }
 
+        body.dark-mode .request-widget textarea {
+            background: #003366;
+            color: #B2E2F2;
+            border-color: #0055aa;
+        }
+
         @media (max-width: 480px) {
             .header h1 { font-size: 24px; }
             .items-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
@@ -577,6 +916,29 @@
 </head>
 <body>
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header" id="ui-settings-title">Settings</div>
+
+            <div class="settings-item">
+                <span class="settings-item-label" id="ui-dark-mode-label">Dark Mode</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <span class="settings-item-label" id="ui-language-label">Language</span>
+                <button class="lang-button" id="langBtn" onclick="toggleLanguage()">TR</button>
+            </div>
+
+            <button class="close-settings-btn" id="ui-close-settings" onclick="closeSettings()">Close</button>
+        </div>
+    </div>
+
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="sideMenu">
         <div class="menu-item" onclick="showScreen('home-screen')" id="menu-home">Home</div>
@@ -584,11 +946,12 @@
         <div class="menu-item" onclick="showScreen('notification-screen')" id="menu-notify">Set Notification</div>
         <div class="menu-item" onclick="showScreen('recommendations-screen')" id="menu-recs">Recommendations</div>
         <div class="menu-item" onclick="showScreen('memories-screen')" id="menu-memories">Memories</div>
-        <div class="menu-item bottom" onclick="showScreen('about-screen')" id="menu-about">About Me</div>
+        <div class="menu-item" onclick="showScreen('about-screen')" id="menu-about">About Me</div>
+        <div class="menu-item" onclick="openSettings()" id="menu-settings">⚙️ Settings</div>
+        <div class="menu-item bottom" onclick="window.location.href='landing.html'">🏠 Back to Home</div>
     </div>
 
     <div class="header">
-        <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">TR</button>
         <h1 id="ui-title">🧳 ecpack</h1>
         <p id="ui-subtitle">Drag items to your luggage</p>
     </div>
@@ -659,11 +1022,180 @@
 
         <div id="about-screen" class="app-screen">
             <div class="about-card">
-                <h2 style="color:#ff69b4; margin-bottom:15px" id="ui-about-title">About Me</h2>
-                <p id="ui-about-body">“This app is built by the ECPack Team.”</p>
+                <h2 style="margin-bottom:15px" id="ui-about-title">About Me</h2>
+                <p id="ui-about-body">This app is built by the ECPack Team.</p>
             </div>
         </div>
     </div>
+    <script>
+        // Travel Recommendations Data
+        const travelRecommendations = {
+            en: [
+                {
+                    tip: "Roll your clothes instead of folding to save 30% more space.",
+                    author: "Global Wanderer"
+                },
+                {
+                    tip: "Pack a change of clothes in your carry-on in case your luggage gets delayed.",
+                    author: "Frequent Flyer"
+                },
+                {
+                    tip: "Use packing cubes to organize your items by category.",
+                    author: "Organization Expert"
+                },
+                {
+                    tip: "Always pack your chargers and important documents in your carry-on.",
+                    author: "Tech Traveler"
+                },
+                {
+                    tip: "Wear your bulkiest shoes and jacket on the plane to save luggage space.",
+                    author: "Smart Packer"
+                },
+                {
+                    tip: "Take photos of your important documents and email them to yourself.",
+                    author: "Safety First"
+                },
+                {
+                    tip: "Pack an empty water bottle to fill after security to save money.",
+                    author: "Budget Traveler"
+                },
+                {
+                    tip: "Use dryer sheets between layers of clothes to keep everything fresh.",
+                    author: "Lifestyle Guru"
+                },
+                {
+                    tip: "Stuff socks inside your shoes to maximize space and keep shoes in shape.",
+                    author: "Space Saver"
+                },
+                {
+                    tip: "Bring a portable charger - you'll thank yourself later.",
+                    author: "Digital Nomad"
+                },
+                {
+                    tip: "Pack a small first-aid kit with band-aids and pain relievers.",
+                    author: "Health Conscious"
+                },
+                {
+                    tip: "Use ziplock bags for liquids and toiletries to prevent spills.",
+                    author: "Neat Traveler"
+                },
+                {
+                    tip: "Check the weather forecast and pack accordingly, but always bring a light jacket.",
+                    author: "Weather Watcher"
+                },
+                {
+                    tip: "Download offline maps of your destination before you leave.",
+                    author: "Navigation Pro"
+                },
+                {
+                    tip: "Keep a small bag of coins and bills in local currency for tips and small purchases.",
+                    author: "Currency Expert"
+                },
+                {
+                    tip: "Pack your clothes in outfit combinations to make getting dressed easier.",
+                    author: "Style Guru"
+                },
+                {
+                    tip: "Bring a reusable shopping bag - it's useful for dirty laundry and souvenirs.",
+                    author: "Eco Traveler"
+                },
+                {
+                    tip: "Pack snacks for the journey, especially for long flights or delays.",
+                    author: "Prepared Explorer"
+                },
+                {
+                    tip: "Use hotel shampoo bottles for your first day, then buy full-size locally.",
+                    author: "Light Packer"
+                },
+                {
+                    tip: "Take a photo of your luggage before checking it in, in case it gets lost.",
+                    author: "Smart Traveler"
+                }
+            ],
+            tr: [
+                {
+                    tip: "Kıyafetleri katlamak yerine rulo yapmak %30 daha fazla alan sağlar.",
+                    author: "Dünya Gezgini"
+                },
+                {
+                    tip: "Bavulunuz kaybolursa diye el çantanıza bir takım kıyafet koyun.",
+                    author: "Sık Uçan Yolcu"
+                },
+                {
+                    tip: "Eşyalarınızı kategorilere göre düzenlemek için paketleme küpleri kullanın.",
+                    author: "Organizasyon Uzmanı"
+                },
+                {
+                    tip: "Şarj aletlerinizi ve önemli belgelerinizi her zaman el çantanıza koyun.",
+                    author: "Teknoloji Seyyahı"
+                },
+                {
+                    tip: "En hacimli ayakkabı ve ceketle uçağa binin, bavul yerinden tasarruf edin.",
+                    author: "Akıllı Paketleyici"
+                },
+                {
+                    tip: "Önemli belgelerinizin fotoğrafını çekin ve kendinize e-posta ile gönderin.",
+                    author: "Güvenlik Öncelikli"
+                },
+                {
+                    tip: "Güvenlik kontrolünden sonra doldurmak için boş su şişesi götürün, para tasarrufu yapın.",
+                    author: "Bütçe Dostu Gezgin"
+                },
+                {
+                    tip: "Kıyafet katları arasına kurutma mendili koyarak her şeyi taze tutun.",
+                    author: "Yaşam Tarzı Gurusu"
+                },
+                {
+                    tip: "Çorapları ayakkabıların içine doldurun, hem yer kazanın hem ayakkabıları koruyun.",
+                    author: "Alan Tasarrufçusu"
+                },
+                {
+                    tip: "Taşınabilir şarj alın - kendinize daha sonra teşekkür edeceksiniz.",
+                    author: "Dijital Göçebe"
+                },
+                {
+                    tip: "Yara bandı ve ağrı kesici içeren küçük bir ilk yardım çantası alın.",
+                    author: "Sağlık Bilincinde"
+                },
+                {
+                    tip: "Sıvılar ve kozmetikler için ziplock poşet kullanın, dökülmeyi önleyin.",
+                    author: "Düzenli Gezgin"
+                },
+                {
+                    tip: "Hava durumunu kontrol edin ve ona göre paketleyin, ama her zaman hafif ceket alın.",
+                    author: "Hava Durumu İzleyicisi"
+                },
+                {
+                    tip: "Gitmeden önce gideceğiniz yerin çevrimdışı haritasını indirin.",
+                    author: "Navigasyon Profesyoneli"
+                },
+                {
+                    tip: "Bahşiş ve küçük alışverişler için yerel para birimi ile küçük bir kese tutun.",
+                    author: "Para Birimi Uzmanı"
+                },
+                {
+                    tip: "Kıyafetlerinizi kombin halinde paketleyin, giyinmeyi kolaylaştırır.",
+                    author: "Stil Gurusu"
+                },
+                {
+                    tip: "Yeniden kullanılabilir alışveriş çantası alın - kirli çamaşırlar ve hediyelikler için kullanışlı.",
+                    author: "Eko Gezgin"
+                },
+                {
+                    tip: "Yolculuk için atıştırmalık alın, özellikle uzun uçuşlar ve gecikmeler için.",
+                    author: "Hazırlıklı Kaşif"
+                },
+                {
+                    tip: "İlk gün için otel şampuanını kullanın, sonra yerel olarak tam boy alın.",
+                    author: "Hafif Paketleyici"
+                },
+                {
+                    tip: "Bavulunuzu teslim etmeden önce fotoğrafını çekin, kaybolursa işe yarar.",
+                    author: "Akıllı Gezgin"
+                }
+            ]
+        };
+    </script>
     <script src="recommendations.js"></script>
     <script>
         const uiStrings = {
@@ -682,7 +1214,9 @@
                 menuRecs: "Recommendations", menuMemories: "Memories", menuAbout: "About Me",
                 recTitle: "💡 Travel Tips",
                 memTitle: "📸 Memories", memAddBtn: "+ Add Vacation Photo", memPrompt: "Note:",
-                aboutTitle: "About Me", aboutBody: "“This app is built by the ECPack Team.”"
+                aboutTitle: "About Me", aboutBody: "This app is built by the ECPack Team.",
+                settingsTitle: "Settings", darkModeLabel: "Dark Mode", languageLabel: "Language",
+                closeSettings: "Close", menuSettings: "⚙️ Settings"
             },
             tr: {
                 title: "🧳 ECPack", subtitle: "Eşyaları bavula sürükle", luggageTitle: "Bavulun",
@@ -699,7 +1233,9 @@
                 menuRecs: "Öneriler", menuMemories: "Anılar", menuAbout: "Hakkımda",
                 recTitle: "💡 Seyahat İpuçları",
                 memTitle: "📸 Anılar", memAddBtn: "+ Tatil Fotoğrafı Ekle", memPrompt: "Not:",
-                aboutTitle: "Hakkımda", aboutBody: "“Bu uygulama ECPack Ekibi tarafından geliştirilmiştir.”"
+                aboutTitle: "Hakkımda", aboutBody: "Bu uygulama ECPack Ekibi tarafından geliştirilmiştir.",
+                settingsTitle: "Ayarlar", darkModeLabel: "Karanlık Mod", languageLabel: "Dil",
+                closeSettings: "Kapat", menuSettings: "⚙️ Ayarlar"
             }
         };
 
@@ -727,74 +1263,38 @@
                     { name: {en: 'Swimsuit', tr: 'Mayo'}, emoji: '🩱' },
                     { name: {en: 'Swim Trunks', tr: 'Deniz Şortu'}, emoji: '🩳' },
                     { name: {en: 'Flip-flops', tr: 'Parmak Arası Terlik'}, emoji: '🩴' },
-                    { name: {en: 'Sandals', tr: 'Sandalet'}, emoji: '🩴' },
                     { name: {en: 'Beach Towel', tr: 'Plaj Havlusu'}, emoji: '🏖️' },
-                    { name: {en: 'Snorkel Gear', tr: 'Şnorkel Takımı'}, emoji: '🤿' },
-                    { name: {en: 'Sun Hat', tr: 'Güneş Şapkası'}, emoji: '👒' },
-                    { name: {en: 'Beach Bag', tr: 'Plaj Çantası'}, emoji: '👜' },
-                    { name: {en: 'Rash Guard', tr: 'Deniz Tişörtü'}, emoji: '👕' },
-                    { name: {en: 'Goggles', tr: 'Deniz Gözlüğü'}, emoji: '🥽' }
-                ]
-            },
-            'Snowy Escape & Ski': {
-                tr: 'Kar & Kayak Tatili',
-                items: [
-                    { name: {en: 'Ski Jacket', tr: 'Kayak Montu'}, emoji: '🧥' },
-                    { name: {en: 'Snow Pants', tr: 'Kar Pantolonu'}, emoji: '👖' },
-                    { name: {en: 'Thermal Base Layer', tr: 'Termal İçlik'}, emoji: '🔥' },
-                    { name: {en: 'Ski Boots', tr: 'Kayak Botu'}, emoji: '🎿' },
-                    { name: {en: 'Snow Boots', tr: 'Kar Botu'}, emoji: '🥾' },
-                    { name: {en: 'Ski Goggles', tr: 'Kayak Gözlüğü'}, emoji: '🥽' },
-                    { name: {en: 'Gloves', tr: 'Eldiven'}, emoji: '🧤' },
-                    { name: {en: 'Beanie', tr: 'Bere'}, emoji: '🧣' },
-                    { name: {en: 'Scarf', tr: 'Atkı'}, emoji: '🧣' },
-                    { name: {en: 'Wool Socks', tr: 'Yün Çorap'}, emoji: '🧦' },
-                    { name: {en: 'Balaclava', tr: 'Kar Maskesi'}, emoji: '🥷' },
-                    { name: {en: 'Helmet', tr: 'Kask'}, emoji: '🪖' },
-                    { name: {en: 'Hand Warmers', tr: 'El Isıtıcı'}, emoji: '🖐️' }
-                ]
-            },
-            'Formal & Business': {
-                tr: 'Resmi & İş Tatili',
-                items: [
-                    { name: {en: 'Suit Jacket', tr: 'Takım Elbise'}, emoji: '🧥' },
-                    { name: {en: 'Dress Shirt', tr: 'Gömlek'}, emoji: '👔' },
-                    { name: {en: 'Tie', tr: 'Kravat'}, emoji: '👔' },
-                    { name: {en: 'Cufflinks', tr: 'Kol Düğmesi'}, emoji: '💎' },
-                    { name: {en: 'Belt', tr: 'Kemer'}, emoji: '👔' },
-                    { name: {en: 'Dress Shoes', tr: 'Kundura'}, emoji: '👞' },
-                    { name: {en: 'Heels', tr: 'Topuklu Ayakkabı'}, emoji: '👠' },
-                    { name: {en: 'Evening Gown', tr: 'Abiye'}, emoji: '👗' },
-                    { name: {en: 'Blazer', tr: 'Blazer Ceket'}, emoji: '🧥' },
-                    { name: {en: 'Watch', tr: 'Saat'}, emoji: '⌚' }
-                ]
-            },
-            'Accessories': {
-                tr: 'Aksesuarlar',
-                items: [
+                    { name: {en: 'Sun Hat', tr: 'Güneş Şapkası'}, emoji: '🧢' },
                     { name: {en: 'Sunglasses', tr: 'Güneş Gözlüğü'}, emoji: '🕶️' },
-                    { name: {en: 'Jewelry', tr: 'Takı'}, emoji: '💍' },
-                    { name: {en: 'Wallet', tr: 'Cüzdan'}, emoji: '👛' },
-                    { name: {en: 'Backpack', tr: 'Sırt Çantası'}, emoji: '🎒' },
-                    { name: {en: 'Umbrella', tr: 'Şemsiye'}, emoji: '☂️' },
-                    { name: {en: 'Cap', tr: 'Şapka'}, emoji: '🧢' },
-                    { name: {en: 'Tote Bag', tr: 'Bez Çanta'}, emoji: '🛍️' },
-                    { name: {en: 'Handbag', tr: 'El Çantası'}, emoji: '👜' }
+                    { name: {en: 'Beach Bag', tr: 'Plaj Çantası'}, emoji: '👜' },
+                    { name: {en: 'Snorkel Set', tr: 'Şnorkel Seti'}, emoji: '🤿' },
+                    { name: {en: 'Water Shoes', tr: 'Deniz Ayakkabısı'}, emoji: '👟' },
+                    { name: {en: 'Sarong', tr: 'Pareo'}, emoji: '👗' }
                 ]
             },
-            'Bathroom & Skincare': {
-                tr: 'Banyo & Cilt Bakımı',
+            'Winter & Ski Trip': {
+                tr: 'Kış & Kayak Gezisi',
+                items: [
+                    { name: {en: 'Winter Coat', tr: 'Kış Montu'}, emoji: '🧥' },
+                    { name: {en: 'Snow Boots', tr: 'Kar Botu'}, emoji: '🥾' },
+                    { name: {en: 'Gloves', tr: 'Eldiven'}, emoji: '🧤' },
+                    { name: {en: 'Scarf', tr: 'Atkı'}, emoji: '🧣' },
+                    { name: {en: 'Beanie', tr: 'Bere'}, emoji: '🎩' },
+                    { name: {en: 'Thermal Wear', tr: 'Termal İçlik'}, emoji: '🩲' },
+                    { name: {en: 'Ski Goggles', tr: 'Kayak Gözlüğü'}, emoji: '🥽' },
+                    { name: {en: 'Hand Warmers', tr: 'El Isıtıcısı'}, emoji: '🔥' },
+                    { name: {en: 'Waterproof Pants', tr: 'Su Geçirmez Pantolon'}, emoji: '👖' }
+                ]
+            },
+            'Personal Care': {
+                tr: 'Kişisel Bakım',
                 items: [
                     { name: {en: 'Toothbrush', tr: 'Diş Fırçası'}, emoji: '🪥' },
                     { name: {en: 'Toothpaste', tr: 'Diş Macunu'}, emoji: '🦷' },
                     { name: {en: 'Shampoo', tr: 'Şampuan'}, emoji: '🧴' },
                     { name: {en: 'Conditioner', tr: 'Saç Kremi'}, emoji: '🧴' },
                     { name: {en: 'Soap', tr: 'Sabun'}, emoji: '🧼' },
-                    { name: {en: 'Body Wash', tr: 'Duş Jeli'}, emoji: '🧴' },
-                    { name: {en: 'Towel', tr: 'Havlu'}, emoji: '🧻' },
                     { name: {en: 'Razor', tr: 'Tıraş Bıçağı'}, emoji: '🪒' },
-                    { name: {en: 'Shaving Cream', tr: 'Tıraş Köpüğü'}, emoji: '🪝' },
-                    { name: {en: 'Hairbrush', tr: 'Saç Fırçası'}, emoji: '💇' },
                     { name: {en: 'Deodorant', tr: 'Deodorant'}, emoji: '💨' },
                     { name: {en: 'Perfume', tr: 'Parfüm'}, emoji: '🌸' },
                     { name: {en: 'Makeup', tr: 'Makyaj Malzemesi'}, emoji: '💄' },
@@ -958,19 +1458,49 @@
             document.getElementById('menu-memories').textContent = s.menuMemories;
             document.getElementById('menu-about').textContent = s.menuAbout;
             document.getElementById('ui-enable-notif').textContent = s.enableNotif;
+
             // New screen translations
             document.getElementById('ui-rec-title').textContent = s.recTitle;
-
             document.getElementById('ui-mem-title').textContent = s.memTitle;
             document.getElementById('ui-mem-add-btn').textContent = s.memAddBtn;
             document.getElementById('ui-about-title').textContent = s.aboutTitle;
             document.getElementById('ui-about-body').textContent = s.aboutBody;
+
+            // Settings translations
+            document.getElementById('ui-settings-title').textContent = s.settingsTitle;
+            document.getElementById('ui-dark-mode-label').textContent = s.darkModeLabel;
+            document.getElementById('ui-language-label').textContent = s.languageLabel;
+            document.getElementById('ui-close-settings').textContent = s.closeSettings;
+            document.getElementById('menu-settings').textContent = s.menuSettings;
 
             const sel = document.getElementById('reminderMessage');
             sel.innerHTML = '';
             s.reminders.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; sel.appendChild(o); });
 
             renderTabs(); renderItems(); renderPackedVisual(); renderReminders(); renderMemories();renderRecommendations();
+        }
+
+        // Settings Modal Functions
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+            toggleMenu();
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // Dark Mode Functions
+        function toggleDarkMode() {
+            const isDark = document.getElementById('darkModeToggle').checked;
+            document.body.classList.toggle('dark-mode', isDark);
+            localStorage.setItem('ecpackDarkMode', isDark);
+        }
+
+        function loadDarkMode() {
+            const isDark = localStorage.getItem('ecpackDarkMode') === 'true';
+            document.getElementById('darkModeToggle').checked = isDark;
+            document.body.classList.toggle('dark-mode', isDark);
         }
 
         function addMemory(event) {
@@ -1111,52 +1641,13 @@
             });
         }
 
-        async function submitRequest() {
-            const input = document.getElementById('requestInput');
-            const v = input.value.trim();
-            
-            // Validate input
-            if (!v) {
-                alert(currentLang === 'en' ? 'Please write something!' : 'Lütfen bir şey yazın!');
-                return;
-            }
-            
-            // Disable button during sending
-            const button = document.getElementById('ui-request-btn');
-            const originalText = button.textContent;
-            button.disabled = true;
-            button.textContent = currentLang === 'en' ? 'Sending...' : 'Gönderiliyor...';
-            
-            try {
-                const response = await fetch('https://formspree.io/f/xykegvvl', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        suggestion: v,
-                        language: currentLang,
-                        timestamp: new Date().toISOString()
-                    })
-                });
-                
-                if (response.ok) {
-                    // Success!
-                    alert(uiStrings[currentLang].requestSuccess);
-                    input.value = '';
-                } else {
-                    // Failed
-                    throw new Error('Network response was not ok');
-                }
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert(uiStrings[currentLang].requestError || 'Error sending request');
-            } finally {
-                // Re-enable button
-                button.disabled = false;
-                button.textContent = originalText;
-            }
+        function submitRequest() {
+            const v = document.getElementById('requestInput').value;
+            if (!v) return;
+            fetch(`https://formspree.io/f/xykegvvl`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({suggestion: v})
+            }).then(() => { alert(uiStrings[currentLang].requestSuccess); document.getElementById('requestInput').value = ''; });
         }
 
         function setMinDate() { document.getElementById('reminderDate').value = new Date().toISOString().split('T')[0]; }
@@ -1167,7 +1658,7 @@
             updateUI();
         }
 
-        setMinDate(); setupDragAndDrop(); loadSavedData(); setInterval(checkReminders, 30000);
+        setMinDate(); setupDragAndDrop(); loadSavedData(); loadDarkMode(); setInterval(checkReminders, 30000);
     </script>
 </body>
 </html>
