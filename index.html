@@ -917,7 +917,6 @@
 <body>
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-    <!-- Settings Modal -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-content">
             <div class="settings-header" id="ui-settings-title">Settings</div>
@@ -958,6 +957,14 @@
 
     <div class="main-container">
         <div id="home-screen" class="app-screen active">
+            <div class="request-widget" style="margin-bottom: 15px;">
+                <div class="notification-title" id="ui-weather-title">🌍 Destination Weather</div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="cityInput" placeholder="Enter city (e.g., London)" class="search-bar" style="margin-bottom: 0;">
+                    <button class="lang-button" id="weatherBtn" onclick="getWeather()">Check</button>
+                </div>
+                <div id="weatherDisplay" style="margin-top: 10px; font-size: 14px; display: none; text-align: center; font-weight: bold;"></div>
+            </div>
             <div class="luggage-section">
                 <div class="luggage-title" id="ui-luggage-title">Your Luggage</div>
                 <div class="luggage-container" id="luggage">
@@ -1029,7 +1036,7 @@
     </div>
     <script src="categories.js"></script>
     <script src="recommendations.js"></script>
-   
+
     <script>
         const uiStrings = {
             en: {
@@ -1049,7 +1056,8 @@
                 memTitle: "📸 Memories", memAddBtn: "+ Add Vacation Photo", memPrompt: "Note:",
                 aboutTitle: "About Me", aboutBody: "This app is built by the ECPack Team.",
                 settingsTitle: "Settings", darkModeLabel: "Dark Mode", languageLabel: "Language",
-                closeSettings: "Close", menuSettings: "⚙️ Settings"
+                closeSettings: "Close", menuSettings: "⚙️ Settings",
+                weatherTitle: "🌍 Destination Weather", weatherSearch: "Enter city...", weatherCheck: "Check"
             },
             tr: {
                 title: "🧳 ECPack", subtitle: "Eşyaları bavula sürükle", luggageTitle: "Bavulun",
@@ -1068,7 +1076,8 @@
                 memTitle: "📸 Anılar", memAddBtn: "+ Tatil Fotoğrafı Ekle", memPrompt: "Not:",
                 aboutTitle: "Hakkımda", aboutBody: "Bu uygulama ECPack Ekibi tarafından geliştirilmiştir.",
                 settingsTitle: "Ayarlar", darkModeLabel: "Karanlık Mod", languageLabel: "Dil",
-                closeSettings: "Kapat", menuSettings: "⚙️ Ayarlar"
+                closeSettings: "Kapat", menuSettings: "⚙️ Ayarlar",
+                weatherTitle: "🌍 Gidilecek Yer Hava Durumu", weatherSearch: "Şehir girin...", weatherCheck: "Kontrol Et"
             }
         };
 
@@ -1109,6 +1118,11 @@
             document.getElementById('ui-request-btn').textContent = s.requestBtn;
             document.getElementById('searchInput').placeholder = s.searchPlaceholder;
 
+            // Weather UI Update
+            document.getElementById('ui-weather-title').textContent = s.weatherTitle;
+            document.getElementById('cityInput').placeholder = s.weatherSearch;
+            document.getElementById('weatherBtn').textContent = s.weatherCheck;
+
             // Menu translations
             document.getElementById('menu-home').textContent = s.menuHome;
             document.getElementById('menu-suggest').textContent = s.menuSuggest;
@@ -1137,6 +1151,51 @@
             s.reminders.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; sel.appendChild(o); });
 
             renderTabs(); renderItems(); renderPackedVisual(); renderReminders(); renderMemories();renderRecommendations();
+        }
+
+        // --- WEATHER FUNCTIONS ---
+        async function getWeather() {
+    const city = document.getElementById('cityInput').value;
+    const weatherDisplay = document.getElementById('weatherDisplay');
+    const apiKey = 'c4f8a6a7722f364ba822955a02785de6';
+
+    if (!city) return;
+    weatherDisplay.style.display = 'block';
+    weatherDisplay.innerHTML = currentLang === 'en' ? "⌛ Loading..." : "⌛ Yükleniyor...";
+
+    try {
+        // Added &lang parameter to translate descriptions
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}&lang=${currentLang}`);
+        const data = await response.json();
+
+        if (data.cod === 200) {
+            const temp = Math.round(data.main.temp);
+            const condition = data.weather[0].main.toLowerCase();
+            const desc = data.weather[0].description;
+
+            // Result will now show as "açık", "parçalı bulutlu", etc., when in TR mode
+            weatherDisplay.innerHTML = `📍 ${data.name}: ${temp}°C, ${desc}`;
+            autoSuggestCategory(temp, condition);
+        } else {
+            weatherDisplay.innerHTML = currentLang === 'en' ? "❌ City not found" : "❌ Şehir bulunamadı";
+        }
+    } catch (error) {
+        weatherDisplay.innerHTML = "⚠️ Error";
+    }
+}
+
+        function autoSuggestCategory(temp, condition) {
+            let suggested = 'General Clothes';
+            if (temp > 25 || condition.includes('clear')) suggested = 'Summer & Beach Escape';
+            else if (temp < 10 || condition.includes('snow')) suggested = 'Winter & Ski Trip';
+
+            if (condition.includes('rain')) {
+                alert(currentLang === 'en' ? "It's rainy! Don't forget a raincoat." : "Hava yağmurlu! Yağmurluğunu unutma.");
+            }
+
+            currentCategory = suggested;
+            renderTabs();
+            renderItems();
         }
 
         // Settings Modal Functions
@@ -1207,13 +1266,24 @@
         }
 
         function renderItems() {
-            const g = document.getElementById('itemsGrid'); g.innerHTML = '';
-            categories[currentCategory].items.forEach(i => {
-                const d = document.createElement('div'); d.className = 'item-card'; d.draggable = true;
-                d.innerHTML = `<div class="item-emoji">${i.emoji}</div><div class="item-name">${i.name[currentLang]}</div>`;
-                d.addEventListener('dragstart', (e) => e.dataTransfer.setData('item', JSON.stringify(i)));
-                g.appendChild(d);
-            });
+            const g = document.getElementById('itemsGrid');
+    g.innerHTML = '';
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+    categories[currentCategory].items.forEach(i => {
+        const nameEn = i.name.en.toLowerCase();
+        const nameTr = i.name.tr.toLowerCase();
+
+        // Check if search term matches either English or Turkish name
+        if (nameEn.includes(searchTerm) || nameTr.includes(searchTerm)) {
+            const d = document.createElement('div');
+            d.className = 'item-card';
+            d.draggable = true;
+            d.innerHTML = `<div class="item-emoji">${i.emoji}</div><div class="item-name">${i.name[currentLang]}</div>`;
+            d.addEventListener('dragstart', (e) => e.dataTransfer.setData('item', JSON.stringify(i)));
+            g.appendChild(d);
+        }
+    });
         }
 
         function setupDragAndDrop() {
